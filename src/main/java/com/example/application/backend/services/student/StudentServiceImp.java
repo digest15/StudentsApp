@@ -1,7 +1,7 @@
 package com.example.application.backend.services.student;
 
 import com.example.application.backend.entity.Student;
-import com.example.application.backend.projections.StudentDTO;
+import com.example.application.backend.dto.StudentDTO;
 import com.example.application.backend.repository.StudentRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

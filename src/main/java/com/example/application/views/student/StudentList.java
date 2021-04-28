@@ -1,7 +1,7 @@
 package com.example.application.views.student;
 
 import com.example.application.backend.entity.Student;
-import com.example.application.backend.projections.StudentDTO;
+import com.example.application.backend.dto.StudentDTO;
 import com.example.application.backend.services.student.StudentService;
 import com.example.application.views.components.AbstractItemList;
 import com.example.application.views.components.StandartItemListFilter;
@@ -10,7 +10,6 @@ import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.notification.Notification;
-import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import org.springframework.beans.factory.annotation.Autowired;

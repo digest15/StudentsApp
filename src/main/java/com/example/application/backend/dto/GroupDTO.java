@@ -1,4 +1,4 @@
-package com.example.application.backend.projections;
+package com.example.application.backend.dto;
 
 public interface GroupDTO extends BaseIdDTO<Long> {
 

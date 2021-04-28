@@ -1,7 +1,7 @@
 package com.example.application.views.group;
 
 import com.example.application.backend.entity.Group;
-import com.example.application.backend.projections.GroupDTO;
+import com.example.application.backend.dto.GroupDTO;
 import com.example.application.backend.services.group.GroupService;
 import com.example.application.views.components.AbstractItemList;
 import com.example.application.views.main.MainView;

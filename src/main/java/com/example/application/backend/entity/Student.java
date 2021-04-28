@@ -8,7 +8,6 @@ import java.util.Date;
 
 @Entity
 public class Student extends StandardEntity {
-    //TODO Добавтиь Lombook?
     private String lastName;
 
     private String firstName;

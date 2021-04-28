@@ -1,9 +1,6 @@
-package com.example.application.backend.projections;
-
-import org.springframework.beans.factory.annotation.Value;
+package com.example.application.backend.dto;
 
 import java.time.LocalDate;
-import java.util.Date;
 
 public interface StudentDTO extends BaseIdDTO<Long> {
     String getLastName();

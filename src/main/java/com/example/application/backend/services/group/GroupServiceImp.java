@@ -1,7 +1,7 @@
 package com.example.application.backend.services.group;
 
 import com.example.application.backend.entity.Group;
-import com.example.application.backend.projections.GroupDTO;
+import com.example.application.backend.dto.GroupDTO;
 import com.example.application.backend.repository.GroupRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
