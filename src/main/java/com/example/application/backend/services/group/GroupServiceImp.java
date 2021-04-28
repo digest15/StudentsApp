@@ -4,11 +4,13 @@ import com.example.application.backend.entity.Group;
 import com.example.application.backend.dto.GroupDTO;
 import com.example.application.backend.repository.GroupRepo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-@Component
+@Repository
+@Transactional
 public class GroupServiceImp implements GroupService {
     private GroupRepo repository;
 
@@ -37,11 +39,13 @@ public class GroupServiceImp implements GroupService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<GroupDTO> getItemsForGrid() {
         return repository.getAllForDto();
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<GroupDTO> getItemsForGrid(String pattern) {
         if (pattern.isEmpty()) {
             return getItemsForGrid();
