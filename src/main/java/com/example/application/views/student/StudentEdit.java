@@ -1,41 +1,37 @@
 package com.example.application.views.student;
 
-import com.example.application.backend.entity.Group;
+import com.example.application.backend.dto.group.GroupDto;
+import com.example.application.backend.dto.student.StudentDto;
 import com.example.application.backend.entity.Student;
-import com.example.application.backend.services.group.GroupService;
+import com.example.application.backend.dao.group.GroupDao;
 import com.example.application.views.components.AbstractItemEditor;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
-import com.vaadin.flow.data.binder.Binder;
-import com.vaadin.flow.data.converter.LocalDateToDateConverter;
 import com.vaadin.flow.spring.annotation.SpringComponent;
 import com.vaadin.flow.spring.annotation.UIScope;
 
-import java.time.ZoneId;
-import java.util.ArrayList;
-
 @SpringComponent
 @UIScope
-public class StudentEdit extends AbstractItemEditor<Student> {
+public class StudentEdit extends AbstractItemEditor<StudentDto> {
     private TextField firstName;
     private TextField lastName;
     private TextField patronomic;
     private DatePicker birthday;
-    private ComboBox<Group> group;
+    private ComboBox<GroupDto> group;
 
-    private GroupService groupService;
+    private GroupDao groupService;
 
-    public StudentEdit(GroupService groupService) {
+    public StudentEdit(GroupDao groupService) {
         this.groupService = groupService;
 
         init();
     }
 
     @Override
-    public void setItem(Student item) {
+    public void setItem(StudentDto item) {
         group.setItems(groupService.getItems());
         super.setItem(item);
     }
@@ -48,7 +44,7 @@ public class StudentEdit extends AbstractItemEditor<Student> {
         birthday = new DatePicker("Birthday");
 
         group = new ComboBox<>("Group");
-        group.setItemLabelGenerator(Group::getSpecialtyName);
+        group.setItemLabelGenerator(GroupDto::getSpecialtyName);
 
         return new VerticalLayout(
                 firstName,

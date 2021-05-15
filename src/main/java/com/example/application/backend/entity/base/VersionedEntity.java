@@ -7,12 +7,12 @@ import javax.persistence.MappedSuperclass;
 import javax.persistence.Version;
 
 @MappedSuperclass
-public class StandardEntity extends BaseLongIdEntity {
+public class VersionedEntity extends BaseLongIdEntity {
     @Version
     @Column(name = "VERSION")
     private Integer version;
 
-    public StandardEntity() {
+    public VersionedEntity() {
     }
 
     public Integer getVersion() {

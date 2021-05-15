@@ -1,6 +1,6 @@
 package com.example.application.views.group;
 
-import com.example.application.backend.entity.Group;
+import com.example.application.backend.dto.group.GroupDto;
 import com.example.application.views.components.AbstractItemEditor;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 @SpringComponent
 @UIScope
-public class GroupEdit extends AbstractItemEditor<Group> {
+public class GroupEdit extends AbstractItemEditor<GroupDto> {
     private TextField number;
     private TextField specialtyName;
 

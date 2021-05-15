@@ -1,8 +1,8 @@
 package com.example.application.views.student;
 
-import com.example.application.backend.entity.Student;
-import com.example.application.backend.dto.StudentDTO;
-import com.example.application.backend.services.student.StudentService;
+import com.example.application.backend.dto.student.StudentDto;
+import com.example.application.backend.dto.student.StudentDtoForGrid;
+import com.example.application.backend.dao.student.StudentDao;
 import com.example.application.views.components.AbstractItemList;
 import com.example.application.views.components.StandartItemListFilter;
 import com.example.application.views.main.MainView;
@@ -20,16 +20,16 @@ import java.util.Optional;
 @Route(value = "students", layout = MainView.class)
 @PageTitle("Student list")
 public class StudentList extends AbstractItemList {
-    private StudentService service;
+    private StudentDao service;
 
-    private Grid<StudentDTO> grid;
+    private Grid<StudentDtoForGrid> grid;
     private StandartItemListFilter numberFilter;
 
     private StudentEdit editor;
     private Dialog dialog = new Dialog();
 
     @Autowired
-    public StudentList(StudentService service, StudentEdit editor) {
+    public StudentList(StudentDao service, StudentEdit editor) {
         this.service = service;
         this.editor = editor;
 
@@ -38,21 +38,21 @@ public class StudentList extends AbstractItemList {
 
     @Override
     protected Component createGrid() {
-        grid = new Grid<>(StudentDTO.class);
+        grid = new Grid<>(StudentDtoForGrid.class);
         grid.removeAllColumns();
         grid.addColumn("firstName").setHeader("First name");
         grid.addColumn("lastName").setHeader("Last name");
         grid.addColumn("patronomic").setHeader("Patronomic");
-        grid.addColumn(i->i.getBirthday().format(DateTimeFormatter.ofPattern("dd.MM.yyyy")),"birthday")
+        grid.addColumn(i -> i.getBirthday().format(DateTimeFormatter.ofPattern("dd.MM.yyyy")),"birthday")
                 .setHeader("Birthday");
-        grid.addColumn("groupName").setHeader("Group");
+        grid.addColumn("groupNumber").setHeader("Group");
         grid.asSingleSelect();
         grid.addItemDoubleClickListener(e -> handDoubleClickOnGrid(e.getItem()));
 
         return grid;
     }
 
-    private void handDoubleClickOnGrid(StudentDTO itemDto) {
+    private void handDoubleClickOnGrid(StudentDtoForGrid itemDto) {
         openEditor(service.findById(itemDto.getId()));
     }
 
@@ -68,12 +68,12 @@ public class StudentList extends AbstractItemList {
 
     @Override
     protected void addItem() {
-        openEditor(new Student());
+        openEditor(new StudentDto());
     }
 
     @Override
     protected void editItem() {
-        Optional<StudentDTO> studentOptional = grid.getSelectionModel().getFirstSelectedItem();
+        Optional<StudentDtoForGrid> studentOptional = grid.getSelectionModel().getFirstSelectedItem();
         if (studentOptional.isPresent()) {
             openEditor(service.findById(studentOptional.get().getId()));
         }else {
@@ -83,7 +83,7 @@ public class StudentList extends AbstractItemList {
 
     @Override
     protected void deleteItem() {
-        Optional<StudentDTO> studentOptional = grid.getSelectionModel().getFirstSelectedItem();
+        Optional<StudentDtoForGrid> studentOptional = grid.getSelectionModel().getFirstSelectedItem();
         if (studentOptional.isPresent()) {
             service.delete(service.findById(studentOptional.get().getId()));
             updateList();
@@ -92,11 +92,11 @@ public class StudentList extends AbstractItemList {
         }
     }
 
-    private void openEditor(Student student) {
+    private void openEditor(StudentDto student) {
         if (student != null) {
             editor.setItem(student);
             editor.setOnSaveHandler(e -> {
-                service.save((Student) e);
+                service.save((StudentDto) e);
                 closeDialog();
                 updateList();
             });
