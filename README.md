@@ -1,6 +1,6 @@
 # Students App
 
-### Java, SpringBoot, SpringData, Vaadin flow
+### Java, SpringBoot, SpringData, Vaadin flow, MapStruct
 
 ### Тестовое задание:
 
