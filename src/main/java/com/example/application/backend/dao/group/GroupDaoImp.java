@@ -38,7 +38,7 @@ public class GroupDaoImp implements GroupDao {
         if (pattern.isEmpty()) {
             return getItems();
         }else {
-            return mapper.fromGroups(repository.findByNameOrNumber(pattern));
+            return mapper.fromGroups(repository.findBySpecialtyNameContaining(pattern));
         }
     }
 
@@ -54,7 +54,7 @@ public class GroupDaoImp implements GroupDao {
         if (pattern.isEmpty()) {
             return getItemsForGrid();
         } else {
-            return mapper.fromGroupsForGrid(repository.findByNameOrNumber(pattern));
+            return mapper.fromGroupsForGrid(repository.findBySpecialtyNameContaining(pattern));
         }
     }
 
