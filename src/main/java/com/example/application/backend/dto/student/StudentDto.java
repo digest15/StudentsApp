@@ -17,5 +17,5 @@ public class StudentDto extends VersionedIdDto<Long> {
 
     private LocalDate birthday;
 
-    private GroupDto groupDto;
+    private GroupDto group;
 }

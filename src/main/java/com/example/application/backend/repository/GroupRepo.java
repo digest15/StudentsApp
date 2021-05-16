@@ -8,8 +8,5 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface GroupRepo extends JpaRepository<Group, Long> {
-    @Query("from Group e " +
-            "where concat(e.specialtyName, ' ', e.number) " +
-                "like concat('%', :pattern, '%')")
-    List<Group> findByNameOrNumber(@Param("pattern") String pattern);
+    List<Group> findBySpecialtyNameContaining(String specialtyName);
 }

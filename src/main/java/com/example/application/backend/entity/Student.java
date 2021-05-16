@@ -9,7 +9,7 @@ import java.time.LocalDate;
 @Entity
 @Table(name = "STUDENT",
         indexes = {
-                @Index(name = "byfullName", columnList = "fullName")
+                @Index(name = "byFullName", columnList = "fullName")
         })
 @Data
 public class Student extends VersionedEntity {

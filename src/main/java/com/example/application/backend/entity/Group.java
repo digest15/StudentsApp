@@ -11,13 +11,12 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "GROUP_T",
         indexes = {
-                @Index(name = "byNumber", columnList = "number")
+                @Index(name = "byNumber", columnList = "number"),
+                @Index(name = "bySpecialtyName", columnList = "specialtyName")
         })
 @Data
 public class Group extends VersionedEntity {
-    @Column(name = "NUMBER")
     private String number;
 
-    @Column(name = "SPECIALTY_NAME")
     private String specialtyName;
 }

@@ -37,7 +37,7 @@ public class GroupList extends AbstractItemList {
     protected void init() {
         super.init();
 
-        filter.setPlaceholder("Type to filter by Spetiality name or number");
+        filter.setPlaceholder("Filter by Spetiality name");
     }
 
     @Override

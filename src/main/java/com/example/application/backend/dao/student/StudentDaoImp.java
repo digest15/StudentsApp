@@ -6,6 +6,7 @@ import com.example.application.backend.dto.student.StudentDtoForGrid;
 import com.example.application.backend.entity.Student;
 import com.example.application.backend.repository.StudentRepo;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,25 +40,27 @@ public class StudentDaoImp implements StudentDao {
         if (pattern.isEmpty()) {
             return getItems();
         }else {
-            return mapper.fromStudents(repository.findByFullNameContaining(pattern));
+            return mapper.fromStudents(repository.findByGroupNumberStartingWith(pattern));
         }
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<StudentDtoForGrid> getItemsForGrid() {
-        return mapper.fromStudentForGrid(repository.findAll());
+        return mapper.fromStudentsToForGrid(repository.findAll());
     }
 
 
     @Override
     @Transactional(readOnly = true)
     public List<StudentDtoForGrid> getItemsForGrid(String pattern) {
-        if (pattern.isEmpty()) {
-            return getItemsForGrid();
-        }else {
-            return mapper.fromStudentForGrid(repository.findByFullNameContaining(pattern));
-        }
+        return mapper.fromStudentsToForGrid(repository.findByGroupNumberStartingWith(pattern));
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<StudentDtoForGrid> getItemsForGrid(String patternByFullName, String patternByGroupNumber) {
+        return mapper.fromStudentsToForGrid(repository.findByFullNameAndGroupNumber(patternByFullName, patternByGroupNumber));
     }
 
     @Override
@@ -73,9 +76,11 @@ public class StudentDaoImp implements StudentDao {
     @Mapper(uses = {GroupDaoImp.GroupMapper.class})
     public interface StudentMapper {
 
-        List<StudentDtoForGrid> fromStudentForGrid(List<Student> sourceCollection);
+        List<StudentDtoForGrid> fromStudentsToForGrid(List<Student> sourceCollection);
 
-        StudentDtoForGrid fromStudentForGrid(Student student);
+        @Mapping(source = "group.specialtyName", target = "specialtyName")
+        @Mapping(source = "group.number", target = "groupNumber")
+        StudentDtoForGrid fromStudentsToForGrid(Student student);
 
 
         List<StudentDto> fromStudents(List<Student> sourceCollection);

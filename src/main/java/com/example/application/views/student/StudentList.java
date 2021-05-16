@@ -10,17 +10,20 @@ import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.format.DateTimeFormatter;
 import java.util.Optional;
+import java.util.function.Consumer;
 
 @Route(value = "students", layout = MainView.class)
 @PageTitle("Student list")
 public class StudentList extends AbstractItemList {
-    private StudentDao service;
+    private StudentDao dao;
 
     private Grid<StudentDtoForGrid> grid;
     private StandartItemListFilter numberFilter;
@@ -29,11 +32,17 @@ public class StudentList extends AbstractItemList {
     private Dialog dialog = new Dialog();
 
     @Autowired
-    public StudentList(StudentDao service, StudentEdit editor) {
-        this.service = service;
+    public StudentList(StudentDao dao, StudentEdit editor) {
+        this.dao = dao;
         this.editor = editor;
 
         init();
+    }
+
+    @Override
+    protected Component createFilter() {
+        filter = new StudentFilter(e -> updateList());
+        return filter;
     }
 
     @Override
@@ -53,16 +62,19 @@ public class StudentList extends AbstractItemList {
     }
 
     private void handDoubleClickOnGrid(StudentDtoForGrid itemDto) {
-        openEditor(service.findById(itemDto.getId()));
+        openEditor(dao.findById(itemDto.getId()));
     }
 
     @Override
     protected void updateList() {
-        String pattern = filter.getPattern();
-        if (pattern.isEmpty()) {
-            grid.setItems(service.getItemsForGrid());
+        String patternByGroupNumber = filter.getPattern();
+        String patternByFullName = ((StudentFilter) filter).getPatternForFullName();
+        if (patternByGroupNumber.isEmpty()) {
+            grid.setItems(dao.getItemsForGrid());
+        }else if (patternByFullName.isEmpty()){
+            grid.setItems(dao.getItemsForGrid(patternByGroupNumber));
         }else {
-            grid.setItems(service.getItemsForGrid(pattern));
+           grid.setItems(dao.getItemsForGrid(patternByFullName, patternByGroupNumber));
         }
     }
 
@@ -75,7 +87,7 @@ public class StudentList extends AbstractItemList {
     protected void editItem() {
         Optional<StudentDtoForGrid> studentOptional = grid.getSelectionModel().getFirstSelectedItem();
         if (studentOptional.isPresent()) {
-            openEditor(service.findById(studentOptional.get().getId()));
+            openEditor(dao.findById(studentOptional.get().getId()));
         }else {
             Notification.show(SELECT_ITEM_NOTIFICATION_TEXT);
         }
@@ -85,7 +97,7 @@ public class StudentList extends AbstractItemList {
     protected void deleteItem() {
         Optional<StudentDtoForGrid> studentOptional = grid.getSelectionModel().getFirstSelectedItem();
         if (studentOptional.isPresent()) {
-            service.delete(service.findById(studentOptional.get().getId()));
+            dao.delete(dao.findById(studentOptional.get().getId()));
             updateList();
         }else {
             Notification.show(SELECT_ITEM_NOTIFICATION_TEXT);
@@ -96,7 +108,7 @@ public class StudentList extends AbstractItemList {
         if (student != null) {
             editor.setItem(student);
             editor.setOnSaveHandler(e -> {
-                service.save((StudentDto) e);
+                dao.save((StudentDto) e);
                 closeDialog();
                 updateList();
             });
@@ -111,5 +123,35 @@ public class StudentList extends AbstractItemList {
 
     private void closeDialog() {
         dialog.close();
+    }
+
+    private class StudentFilter extends StandartItemListFilter {
+        private TextField filterByFullName;
+
+        public StudentFilter(Consumer<String> filterHandler) {
+            super(filterHandler);
+            add(filterByFullName);
+        }
+
+        public String getPatternForFullName() {
+            return filterByFullName.getValue();
+        }
+
+        @Override
+        protected void configureFilter() {
+            filter = new TextField("", "Filter by Group Number");
+            filter.setClearButtonVisible(true);
+            filter.setValueChangeMode(ValueChangeMode.LAZY);
+            filter.addValueChangeListener(e -> {
+                filterByFullName.setEnabled(!getPattern().isEmpty());
+                handler.accept(getPattern());
+            });
+
+            filterByFullName = new TextField("", "Filter by Full Name");
+            filterByFullName.setClearButtonVisible(true);
+            filterByFullName.setValueChangeMode(ValueChangeMode.LAZY);
+            filterByFullName.addValueChangeListener(e -> handler.accept(getPatternForFullName()));
+            filterByFullName.setEnabled(false);
+        }
     }
 }
