@@ -2,9 +2,12 @@ package com.example.application.backend.dao.group;
 
 import com.example.application.backend.dto.group.GroupDto;
 import com.example.application.backend.dto.group.GroupDtoForGrid;
+import com.example.application.backend.dto.student.StudentDto;
 import com.example.application.backend.entity.Group;
+import com.example.application.backend.entity.Student;
 import com.example.application.backend.repository.GroupRepo;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -79,5 +82,10 @@ public class GroupDaoImp implements GroupDao {
         List<Group> toGroups(List<GroupDto> dtoCollection);
 
         Group toGroup(GroupDto dto);
+
+        List<StudentDto> fromStudents(List<Student> sourceCollection);
+
+        @Mapping(target = "group", ignore = true)
+        StudentDto fromStudent(Student student);
     }
 }

@@ -1,8 +1,10 @@
 package com.example.application.backend.dao.student;
 
 import com.example.application.backend.dao.group.GroupDaoImp;
+import com.example.application.backend.dto.group.GroupDto;
 import com.example.application.backend.dto.student.StudentDto;
 import com.example.application.backend.dto.student.StudentDtoForGrid;
+import com.example.application.backend.entity.Group;
 import com.example.application.backend.entity.Student;
 import com.example.application.backend.repository.StudentRepo;
 import org.mapstruct.Mapper;
@@ -73,7 +75,7 @@ public class StudentDaoImp implements StudentDao {
         repository.delete(mapper.toStudent(item));
     }
 
-    @Mapper(uses = {GroupDaoImp.GroupMapper.class})
+    @Mapper
     public interface StudentMapper {
 
         List<StudentDtoForGrid> fromStudentsToForGrid(List<Student> sourceCollection);
@@ -91,5 +93,10 @@ public class StudentDaoImp implements StudentDao {
         List<Student> toStudents(List<StudentDto> dtoCollection);
 
         Student toStudent(StudentDto dto);
+
+        @Mapping(target = "students", ignore = true)
+        GroupDto fromGroup(Group group);
+
+        Group toGroup(GroupDto dto);
     }
 }

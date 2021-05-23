@@ -15,6 +15,8 @@ public class StudentDto extends VersionedIdDto<Long> {
 
     private String patronomic;
 
+    private String fullName;
+
     private LocalDate birthday;
 
     private GroupDto group;

@@ -86,8 +86,8 @@ public class GroupList extends AbstractItemList {
         }
     }
 
-    private void handDoubleClickOnGrid(GroupDtoForGrid itemDto) {
-        openEditor(dao.findById(itemDto.getId()));
+    private void handDoubleClickOnGrid(GroupDtoForGrid item) {
+        openEditor(dao.findById(item.getId()));
     }
 
     private void openEditor(GroupDto group) {
