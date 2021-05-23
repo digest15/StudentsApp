@@ -2,6 +2,7 @@ package com.example.application.backend.dao.group;
 
 import com.example.application.backend.dto.group.GroupDto;
 import com.example.application.backend.dto.group.GroupDtoForGrid;
+import com.example.application.backend.dto.group.GroupDtoOnlyName;
 import com.example.application.backend.dto.student.StudentDto;
 import com.example.application.backend.entity.Group;
 import com.example.application.backend.entity.Student;
@@ -62,6 +63,17 @@ public class GroupDaoImp implements GroupDao {
     }
 
     @Override
+    @Transactional(readOnly = true)
+    public List<GroupDtoOnlyName> getItemsOnlyName() {
+        return mapper.fromGroupsToGroupsDtoOnlyName(repository.findAll());
+    }
+
+    @Override
+    public GroupDtoOnlyName findByIdOnlyName(Long id) {
+        return mapper.fromGroupToGroupDtoOnlyName(repository.findById(id).orElse(null));
+    }
+
+    @Override
     public void save(GroupDto item) {
         repository.save(mapper.toGroup(item));
     }
@@ -87,5 +99,9 @@ public class GroupDaoImp implements GroupDao {
 
         @Mapping(target = "group", ignore = true)
         StudentDto fromStudent(Student student);
+
+        List<GroupDtoOnlyName> fromGroupsToGroupsDtoOnlyName(List<Group> sourceCollection);
+
+        GroupDtoOnlyName fromGroupToGroupDtoOnlyName(Group source);
     }
 }

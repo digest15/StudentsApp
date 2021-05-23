@@ -1,6 +1,7 @@
 package com.example.application.views.student;
 
 import com.example.application.backend.dto.group.GroupDto;
+import com.example.application.backend.dto.group.GroupDtoOnlyName;
 import com.example.application.backend.dto.student.StudentDto;
 import com.example.application.backend.entity.Student;
 import com.example.application.backend.dao.group.GroupDao;
@@ -20,7 +21,7 @@ public class StudentEdit extends AbstractItemEditor<StudentDto> {
     private TextField lastName;
     private TextField patronomic;
     private DatePicker birthday;
-    private ComboBox<GroupDto> group;
+    private ComboBox<GroupDtoOnlyName> group;
 
     private GroupDao groupService;
 
@@ -32,7 +33,7 @@ public class StudentEdit extends AbstractItemEditor<StudentDto> {
 
     @Override
     public void setItem(StudentDto item) {
-        group.setItems(groupService.getItems());
+        group.setItems(groupService.getItemsOnlyName());
         super.setItem(item);
     }
 
@@ -44,7 +45,7 @@ public class StudentEdit extends AbstractItemEditor<StudentDto> {
         birthday = new DatePicker("Birthday");
 
         group = new ComboBox<>("Group");
-        group.setItemLabelGenerator(GroupDto::getSpecialtyName);
+        group.setItemLabelGenerator(GroupDtoOnlyName::getSpecialtyName);
 
         return new VerticalLayout(
                 firstName,
